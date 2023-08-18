@@ -11,7 +11,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # e2eテスト
-if [[ $HOSTNAME == env-* ]]; then
+if [[ $HOSTNAME == team-* ]]; then
     (cd benchmarker && ./e2e.sh)
     if [ $? -ne 0 ]; then
         echo "採点フローを中断します。"
@@ -28,7 +28,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-if [[ $HOSTNAME != env-* ]]; then
+if [[ $HOSTNAME != team-* ]]; then
     exit 0
 fi
 
