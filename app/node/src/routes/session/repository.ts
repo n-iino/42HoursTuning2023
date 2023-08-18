@@ -2,10 +2,23 @@ import { RowDataPacket } from "mysql2";
 import pool from "../../util/mysql";
 import { Session } from "../../model/types";
 import { convertDateToString } from "../../model/utils";
+import { CacheManager } from "../../util/redis/cacheManager";
 
 export const getSessionByUserId = async (
   userId: string
 ): Promise<Session | undefined> => {
+  const cacheSessionStr = await CacheManager.get("sessionByUserId", userId);
+
+  if (cacheSessionStr) {
+    const cacheSession = JSON.parse(cacheSessionStr);
+
+    return {
+      sessionId: cacheSession[0].session_id,
+      userId: cacheSession[0].linked_user_id,
+      createdAt: cacheSession[0].created_at,
+    };
+  }
+
   const [session] = await pool.query<RowDataPacket[]>(
     "SELECT * FROM session WHERE linked_user_id = ?",
     [userId]
@@ -13,6 +26,8 @@ export const getSessionByUserId = async (
   if (session.length === 0) {
     return;
   }
+
+  await CacheManager.set("sessionByUserId", userId, JSON.stringify(session));
 
   return {
     sessionId: session[0].session_id,
@@ -35,6 +50,21 @@ export const createSession = async (
 export const getSessionBySessionId = async (
   sessionId: string
 ): Promise<Session | undefined> => {
+  const cacheSessionStr = await CacheManager.get(
+    "sessionBySessionId",
+    sessionId
+  );
+
+  if (cacheSessionStr) {
+    const cacheSession = JSON.parse(cacheSessionStr);
+
+    return {
+      sessionId: cacheSession[0].session_id,
+      userId: cacheSession[0].linked_user_id,
+      createdAt: cacheSession[0].created_at,
+    };
+  }
+
   const [session] = await pool.query<RowDataPacket[]>(
     "SELECT * FROM session WHERE session_id = ?",
     [sessionId]
@@ -42,6 +72,12 @@ export const getSessionBySessionId = async (
   if (session.length === 0) {
     return;
   }
+
+  await CacheManager.set(
+    "sessionBySessionId",
+    sessionId,
+    JSON.stringify(session)
+  );
 
   return {
     sessionId: session[0].session_id,
