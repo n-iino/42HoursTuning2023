@@ -37,7 +37,9 @@ export const createMatchGroup = async (
       console.error("not all members found before timeout");
       return;
     }
-    const candidate = await getUserForFilter();
+    // userは300001人いるので0以上300000以下の数字を生成
+    const id = Math.floor(Math.random() * 300000);
+    const candidate = await getUserForFilter(undefined, id);
     if (
       matchGroupConfig.departmentFilter !== "none" &&
       !isPassedDepartmentFilter(
