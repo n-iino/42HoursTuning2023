@@ -17,6 +17,8 @@ services:
       - ../images/user-icon:/node/images/user-icon
     labels:
       com.datadoghq.ad.logs: '[{"source": "nodejs", "service": "backend"}]'
+    environment:
+      DATADOG_ENV: "remote"
   frontend:
     container_name: frontend
     build:

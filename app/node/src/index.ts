@@ -4,7 +4,7 @@ import { app } from "./app";
 tracer.init({
   hostname: "datadog-agent",
   port: 8126,
-  env: "local",
+  env: process.env["DATADOG_ENV"] || "remote",
   logInjection: true,
   profiling: true,
 });

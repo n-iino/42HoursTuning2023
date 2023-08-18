@@ -17,6 +17,8 @@ services:
       - ./node/src:/node/src
     labels:
       com.datadoghq.ad.logs: '[{"source": "nodejs", "service": "backend"}]'
+    environment:
+      DATADOG_ENV: "local"
   frontend:
     container_name: frontend
     build:
