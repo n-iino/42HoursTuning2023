@@ -8,3 +8,4 @@ create index mail_and_password_idx on user(mail, password);
 create index user_name_idx on user(user_name);
 create index goal_idx on user(goal);
 create index mail_idx on user(mail);
+create index kana_idx on user(kana);
