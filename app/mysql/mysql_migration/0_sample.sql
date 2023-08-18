@@ -12,3 +12,4 @@ create index kana_idx on user(kana);
 create index session_id_idx on session(session_id);
 create index user_id_index on user(user_id);
 create index skill_name_index on skill(skill_name);
+create index file_id_index on file(file_id);
