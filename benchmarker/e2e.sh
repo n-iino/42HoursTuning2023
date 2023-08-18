@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ $HOSTNAME == env-* ]];
+if [[ $HOSTNAME == team-* ]];
 then
 	BASE_URL="https://${HOSTNAME}.ftt2306.dabaas.net"
 else

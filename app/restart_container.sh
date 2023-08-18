@@ -8,7 +8,7 @@
 echo "アプリのコンテナの再起動を開始します。"
 
 docker compose down
-if [[ $HOSTNAME == env-* ]];
+if [[ $HOSTNAME == team-* ]];
 then
 	COMPOSE_DOCKER_CLI_BUILD=1 docker compose up --build -d
 else

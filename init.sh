@@ -16,7 +16,7 @@ fi
 # リポジトリ初期化開始
 echo "リポジトリの初期化を開始します。"
 
-if [[ $HOSTNAME == env-* ]]; then
+if [[ $HOSTNAME == team-* ]]; then
 	webUrl="https://$HOSTNAME.ftt2306.dabaas.net/"
 	cp -r /.da/* ./.da
 elif [ $# -lt 2 ]; then
