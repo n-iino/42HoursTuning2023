@@ -15,6 +15,8 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ../images/user-icon:/node/images/user-icon
+    labels:
+      com.datadoghq.ad.logs: '[{"source": "nodejs", "service": "backend"}]'
   frontend:
     container_name: frontend
     build:
@@ -37,3 +39,20 @@ services:
       - ../volume/mysql:/var/lib/mysql
       - ./mysql/mysql_migration:/etc/mysql/mysql_migration
       - ./mysql/mysql.conf:/etc/mysql/conf.d/mysql.cnf
+  datadog:
+    container_name: datadog-agent
+    image: datadog/agent:7
+    pid: host
+    environment:
+      - DD_API_KEY=$DD_API_KEY
+      - DD_SITE=ap1.datadoghq.com
+      - DD_LOGS_ENABLED=true
+      - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+      - DD_AC_EXCLUDE="name:dd-agent"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    ports:
+      - "8126:8126/tcp"
